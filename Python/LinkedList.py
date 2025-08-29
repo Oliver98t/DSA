@@ -332,6 +332,62 @@ class LinkedList:
 
         self.head = dummy1.next
 
+    def bubble_sort(self):
+        if self.length < 2:
+            return
+
+        sorted_until = None
+
+        while sorted_until != self.head.next:
+            current = self.head
+            while current.next != sorted_until:
+                next_node = current.next
+                if current.value > next_node.value:
+                    current.value, next_node.value = next_node.value, current.value
+                current = current.next
+            sorted_until = current
+
+    def selection_sort(self):
+        inspect_node = self.head
+
+        while inspect_node:
+            sublist_node = inspect_node.next
+
+            min_node = inspect_node
+
+            while sublist_node:
+                if min_node.value > sublist_node.value:
+                    min_node = sublist_node
+
+                sublist_node = sublist_node.next
+
+            if min_node:
+                inspect_node.value, min_node.value = min_node.value, inspect_node.value
+            inspect_node = inspect_node.next
+
+    def insertion_sort(self):
+        if self.head is None:
+            return None
+        prev = self.head
+        curr = self.head.next
+        count = 1
+        while curr:
+            prev = self.head
+            for i in range(count):
+                if curr.value < prev.value:
+                    curr.value, prev.value = prev.value, curr.value
+                prev = prev.next
+
+            count += 1
+            curr = curr.next
+
+    def merge(self, ll: 'LinkedList'):
+        # combine currenr list with new list
+        if ll.head is None:
+            return None
+        self.tail.next = ll.head
+        self.insertion_sort()
+
 def find_kth_from_end(ll: LinkedList, k):
     slow = ll.head
     fast = ll.head
@@ -347,6 +403,114 @@ def find_kth_from_end(ll: LinkedList, k):
     return slow
 
 # test cases
+def test_merge():
+    l1 = LinkedList(1)
+    l1.append(3)
+    l1.append(5)
+    l1.append(7)
+
+
+    l2 = LinkedList(2)
+    l2.append(4)
+    l2.append(6)
+    l2.append(8)
+
+    l1.merge(l2)
+
+    l1.print_list()
+
+def test_insertion_sort():
+    my_linked_list = LinkedList(4)
+    my_linked_list.append(2)
+    my_linked_list.append(6)
+    my_linked_list.append(5)
+    my_linked_list.append(1)
+    my_linked_list.append(3)
+
+    print("Linked List Before Sort:")
+    my_linked_list.print_list()
+
+    my_linked_list.insertion_sort()
+
+    print("\nSorted Linked List:")
+    my_linked_list.print_list()
+
+def test_selection_sort():
+    # Test Cases:
+    # -----------------------------------
+
+    # Test 1: Empty list
+    print("Test 1: Empty list")
+    ll1 = LinkedList(5)
+    ll1.head = None
+    ll1.length = 0
+    ll1.selection_sort()
+    ll1.print_list()  # Should print: empty
+    print("-" * 30)
+
+    # Test 2: Single element
+    print("Test 2: Single element")
+    ll2 = LinkedList(5)
+    ll2.selection_sort()
+    ll2.print_list()  # Should print: 5
+    print("-" * 30)
+
+    # Test 3: Already sorted list
+    print("Test 3: Already sorted list")
+    ll3 = LinkedList(1)
+    ll3.append(2)
+    ll3.append(3)
+    ll3.selection_sort()
+    ll3.print_list()  # Should print: 1 -> 2 -> 3
+    print("-" * 30)
+
+    # Test 4: Reverse order
+    print("Test 4: Reverse order")
+    ll4 = LinkedList(3)
+    ll4.append(2)
+    ll4.append(1)
+    ll4.selection_sort()
+    ll4.print_list()  # Should print: 1 -> 2 -> 3
+    print("-" * 30)
+
+
+    # Test 5: Random order
+    print("Test 5: Random order")
+    ll5 = LinkedList(2)
+    ll5.append(1)
+    ll5.append(3)
+    ll5.selection_sort()
+    ll5.print_list()  # Should print: 1 -> 2 -> 3
+    print("-" * 30)
+
+
+    # Test 6: List with duplicates
+    print("Test 6: List with duplicates")
+    ll6 = LinkedList(3)
+    ll6.append(2)
+    ll6.append(2)
+    ll6.append(1)
+    ll6.append(3)
+    ll6.selection_sort()
+    ll6.print_list()  # Should print: 1 -> 2 -> 2 -> 3 -> 3
+    print("-" * 30)
+
+def test_bubble_sort():
+    my_linked_list = LinkedList(4)
+    my_linked_list.append(2)
+    my_linked_list.append(6)
+    my_linked_list.append(5)
+    my_linked_list.append(1)
+    my_linked_list.append(3)
+
+    print("Linked List Before Sort:")
+    my_linked_list.print_list()
+
+    my_linked_list.bubble_sort()
+
+    print("\nSorted Linked List:")
+    my_linked_list.print_list()
+
 def swap_pairs_test():
     # Test case 1: Swapping pairs in a list with an even number of nodes (1->2->3->4)
     print("\nTest case 1: Swapping pairs in a list with an even number of nodes.")
@@ -740,6 +904,10 @@ if __name__ == "__main__":
     #find_kth_from_end_test()
     #remove_duplicates_test()
     #binary_to_decimal_test()
-    partition_list_test()
+    #partition_list_test()
     #reverse_between_test()
     #swap_pairs_test()
+    #test_bubble_sort()
+    #test_selection_sort()
+    #test_insertion_sort()
+    test_merge()

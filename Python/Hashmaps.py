@@ -1,3 +1,5 @@
+# dictionaries
+############################################################
 def item_in_common(list1: list, list2: list):
     is_item_in_common = False
     combined = list1 + list2
@@ -70,10 +72,92 @@ def two_sum(nums: list, target: int) -> list:
     return two_sum_indices
 
 def subarray_sum(nums, target):
-    pass
+    sum_index = {0 : -1}
+    current_sum = 0
+
+    for i, num in enumerate(nums):
+        current_sum += num
+
+        inspect = current_sum-target
+        if inspect in sum_index:
+            return [sum_index[inspect]+1, i]
+
+        sum_index[current_sum] = i
+
+    return []
+############################################################
+
+# sets
+###########################################################
+def remove_duplicates(input : list):
+    return list(set(input))
+
+def has_unique_chars(input: str) -> bool:
+    str_len = len(input)
+    if str_len == 0:
+        return True
+
+    str_set = set(input)
+    str_set_len = len(str_set)
+
+    if str_set_len == str_len:
+        return True
+    else:
+        return False
+
+def find_pairs(arr1:list, arr2:list, target:int):
+    set1 = set(arr1)
+
+    pairs = []
+    for num in arr2:
+        inspect_num = target-num
+        if inspect_num in set1:
+            print(f"{inspect_num} {num}")
+            pairs.append( (inspect_num, num) )
+    return pairs
+
+def longest_consecutive_sequence(nums: list):
+    num_set = set(nums)
+    longest_sequence = 0
+    for num in nums:
+        if num - 1 not in num_set:
+            current_num = num
+            current_sequence = 1
+
+            while current_num + 1 in num_set:
+                current_num += 1
+                current_sequence += 1
+
+            longest_sequence = max(longest_sequence, current_sequence)
+    return longest_sequence
+###########################################################
 
 # tests
 ##########################################
+def test_longest_consecutive_sequence():
+    #print( longest_consecutive_sequence([11, 12, 13, 1, 3, 2]) )
+    print( longest_consecutive_sequence([100, 4, 200, 1, 3, 2]) )
+
+def test_find_pairs():
+    arr1 = [1, 2, 3, 4, 5]
+    arr2 = [2, 4, 6, 8, 10]
+    target = 7
+
+    pairs = find_pairs(arr1, arr2, target)
+    print (pairs)
+
+def test_has_unique_chars():
+    print(has_unique_chars('abcdefg')) # should return True
+    print(has_unique_chars('hello')) # should return False
+    print(has_unique_chars('')) # should return True
+    print(has_unique_chars('0123456789')) # should return True
+    print(has_unique_chars('abacadaeaf')) # should return False
+
+def test_remove_duplicates():
+    my_list = [1, 2, 3, 4, 1, 2, 5, 6, 7, 3, 4, 8, 9, 5]
+    new_list = remove_duplicates(my_list)
+    print(new_list)
+
 def test_subarray_sum():
     nums = [1, 2, 3, 4, 5]
     target = 9
@@ -90,6 +174,7 @@ def test_subarray_sum():
     nums = []
     target = 0
     print ( subarray_sum(nums, target) )
+
 
 def test_two_sum():
     print(two_sum([5, 1, 7, 2, 9, 3], 10))
@@ -140,4 +225,8 @@ if __name__ == "__main__":
     #test_first_non_repeating_char()
     #test_group_anagrams()
     #test_two_sum()
-    test_subarray_sum()
+    #test_subarray_sum()
+    #test_remove_duplicates()
+    #test_has_unique_chars()
+    #test_find_pairs()
+    test_longest_consecutive_sequence()

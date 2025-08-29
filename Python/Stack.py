@@ -81,8 +81,6 @@ class MyQueue:
         else:
             return self.stack1.pop()
 
-
-
     def peek(self):
         return self.stack1[-1]
 
